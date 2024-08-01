@@ -35,7 +35,10 @@ const CreateProjectView = () => {
                     onSubmit={handleSubmit(handleForm)}
                     noValidate
                 >
-                    <ProjectForm/>
+                    <ProjectForm
+                        register={register}
+                        errors={errors}
+                    />
 
                     <input
                         type="submit"
