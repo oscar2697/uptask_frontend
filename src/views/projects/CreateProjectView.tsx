@@ -4,22 +4,30 @@ import ProjectForm from '@/components/projects/ProjectForm'
 import { ProjectFormData } from '@/types/index'
 import { createProject } from '@/services/ProjectApi'
 import { toast } from 'react-toastify'
+import { useMutation } from '@tanstack/react-query'
 
 const CreateProjectView = () => {
     const navigate = useNavigate()
-    const initialValues : ProjectFormData = {
+    const initialValues: ProjectFormData = {
         projectName: '',
         clientName: '',
         description: ''
     }
 
-    const {register, handleSubmit, formState: {errors}} = useForm({defaultValues: initialValues})
+    const { register, handleSubmit, formState: { errors } } = useForm({ defaultValues: initialValues })
 
-    const handleForm = async (formData: ProjectFormData) => {
-        const data = await createProject(formData)
-        toast.success(data)
-        navigate('/')
-    }
+    const {mutate} = useMutation({
+        mutationFn: createProject,
+        onError: (error) => {
+            toast.error(error.message)
+        },
+        onSuccess: (data) => {
+            toast.success(data)
+            navigate('/')
+        }
+    })
+
+    const handleForm = (formData: ProjectFormData) => mutate(formData)
 
     return (
         <>
@@ -36,8 +44,8 @@ const CreateProjectView = () => {
                     </Link>
                 </nav>
 
-                <form 
-                    className='mt-10 bg-white shadow-lg p-10 rounded-lg' 
+                <form
+                    className='mt-10 bg-white shadow-lg p-10 rounded-lg'
                     onSubmit={handleSubmit(handleForm)}
                     noValidate
                 >
