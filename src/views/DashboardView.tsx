@@ -1,14 +1,28 @@
 import { Fragment } from 'react'
 import { Menu, MenuButton, MenuItem, MenuItems, Transition } from '@headlessui/react'
 import { EllipsisVerticalIcon } from '@heroicons/react/20/solid'
-import { getProject } from "@/services/ProjectApi"
-import { useQuery } from "@tanstack/react-query"
+import { deleteProject, getProject } from "@/services/ProjectApi"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { Link } from "react-router-dom"
+import { toast } from 'react-toastify'
 
 const DashboardView = () => {
     const { data, isLoading } = useQuery({
         queryKey: ['projects'],
         queryFn: getProject
+    })
+
+    const queryCLient = useQueryClient()
+
+    const {mutate} = useMutation({
+        mutationFn: deleteProject,
+        onError: (error) => {
+            toast.error(error.message)
+        },
+        onSuccess: (data) => {
+            toast.success(data)
+            queryCLient.invalidateQueries({queryKey: ['projects']})
+        }
     })
 
     if (isLoading) return 'Loading...'
@@ -76,7 +90,7 @@ const DashboardView = () => {
                                             </MenuItem>
 
                                             <MenuItem>
-                                                <Link to={``}
+                                                <Link to={`/projects/${project._id}/edit`}
                                                     className='block px-3 py-1 text-sm leading-6 text-gray-900'>
                                                     Edit Project
                                                 </Link>
@@ -86,7 +100,7 @@ const DashboardView = () => {
                                                 <button
                                                     type='button'
                                                     className='block px-3 py-1 text-sm leading-6 text-red-500'
-                                                    onClick={() => { }}
+                                                    onClick={() => mutate(project._id)}
                                                 >
                                                     Delete Project
                                                 </button>
