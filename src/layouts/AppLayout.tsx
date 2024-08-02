@@ -3,6 +3,7 @@ import Logo from "@/components/Logo"
 import NavMenu from "@/components/NavMenu"
 import { ToastContainer } from "react-toastify"
 
+
 const AppLayout = () => {
     return (
         <>
@@ -27,7 +28,7 @@ const AppLayout = () => {
             </footer>
 
             <ToastContainer
-                
+
             />
         </>
     )
