@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom"
 import Logo from "@/components/Logo"
 import NavMenu from "@/components/NavMenu"
 import { ToastContainer } from "react-toastify"
-
+import 'react-toastify/dist/ReactToastify.css'
 
 const AppLayout = () => {
     return (
@@ -28,7 +28,8 @@ const AppLayout = () => {
             </footer>
 
             <ToastContainer
-
+                pauseOnHover={false}
+                pauseOnFocusLoss={false}
             />
         </>
     )
