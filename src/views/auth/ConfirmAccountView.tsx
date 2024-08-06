@@ -56,7 +56,7 @@ export default function ConfirmAccountView() {
 
             <nav className="mt-10 flex flex-col space-y-4">
                 <Link
-                    to='/auth/new-code'
+                    to='/auth/request'
                     className="text-center text-gray-300 font-normal"
                 >
                     Get a New Token
