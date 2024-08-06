@@ -154,6 +154,13 @@ export default function RegisterView() {
                     Have an account? {''}
                     <span className=" text-fuchsia-500 font-bold">Log in</span>
                 </Link>
+
+                <Link
+                    to='/auth/reset'
+                    className="text-center text-gray-300 font-normal"
+                >
+                    Forgotten your password?
+                </Link>
             </nav>
         </>
     )

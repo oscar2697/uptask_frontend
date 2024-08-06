@@ -11,7 +11,7 @@ export default function LoginView() {
         email: '',
         password: '',
     }
-    
+
     const { register, handleSubmit, formState: { errors } } = useForm({ defaultValues: initialValues })
 
     const {mutate} = useMutation({
@@ -28,9 +28,15 @@ export default function LoginView() {
 
     return (
         <>
+            <h1 className="text-5xl font-black text-white">Welcome Back!</h1>
+            <p className="text-2xl font-light text-white mt-5">
+                We´re so excited {''}
+                <span className=" text-fuchsia-500 font-bold">to see you again!</span>
+            </p>
+
             <form
                 onSubmit={handleSubmit(handleLogin)}
-                className="space-y-8 p-10 bg-white"
+                className="space-y-8 p-10 mt-10 bg-white"
                 noValidate
             >
                 <div className="flex flex-col gap-5">
@@ -94,6 +100,13 @@ export default function LoginView() {
                 >
                     Don't have an account? {''}
                     <span className=" text-fuchsia-500 font-bold">Sign up</span>
+                </Link>
+
+                <Link
+                    to='/auth/reset'
+                    className="text-center text-gray-300 font-normal"
+                >
+                    Forgotten your password?
                 </Link>
             </nav>
         </>
