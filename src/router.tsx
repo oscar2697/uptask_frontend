@@ -4,6 +4,10 @@ import DashboardView from '@/views/DashboardView'
 import CreateProjectView from '@/views/projects/CreateProjectView'
 import EditProjectView from './views/projects/EditProjectView'
 import ProjectsDetails from './views/projects/ProjectsDetails'
+import AuthLayout from './layouts/AuthLayout'
+import LoginView from './views/auth/LoginView'
+import RegisterView from './views/auth/RegisterView'
+import ConfirmAccountView from './views/auth/ConfirmAccountView'
 
 
 const Router = () => {
@@ -15,6 +19,12 @@ const Router = () => {
                     <Route path='/projects/create' element={<CreateProjectView/>}/>
                     <Route path='/projects/:projectId' element={<ProjectsDetails/>}/>
                     <Route path='/projects/:projectId/edit' element={<EditProjectView/>}/>
+                </Route>
+
+                <Route element={<AuthLayout/>}>
+                    <Route path='/auth/login' element={<LoginView/>} />
+                    <Route path='/auth/signup' element={<RegisterView/>} />
+                    <Route path='/auth/confirm' element={<ConfirmAccountView/>} />
                 </Route>
             </Routes>
         </BrowserRouter>
