@@ -2,12 +2,12 @@ import { getUser } from "@/services/AuthApi"
 import { useQuery } from "@tanstack/react-query"
 
 export const useAuth = () => {
-    const {data, isError, isLoading} = useQuery({
+    const {data, isError, isLoading } = useQuery({
         queryKey: ['user'],
         queryFn: getUser,
-        retry: false,
+        retry: 1,
         refetchOnWindowFocus: false
     })
 
-    return {data, isError, isLoading}
+    return { data, isError, isLoading }
 }

@@ -13,7 +13,7 @@ const AppLayout = () => {
         return <Navigate to='/auth/login'/>
     }
 
-    return (
+    if(data) return (
         <>
             <header className="bg-gray-800 py-5">
                 <div className="max-w-screen-2xl mx-auto flex flex-col lg:flex-row justify-between items-center">
@@ -23,7 +23,9 @@ const AppLayout = () => {
                         </Link>
                     </div>
 
-                    <NavMenu/>
+                    <NavMenu 
+                        name={data.name}
+                    />
                 </div>
             </header>
 
