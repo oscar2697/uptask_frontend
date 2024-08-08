@@ -93,7 +93,7 @@ export async function getUser() {
     try {
         const {data} = await api('/auth/user')
         const response = userSchema.safeParse(data)
-        
+
         if(response.success) {
             return response.data
         }
