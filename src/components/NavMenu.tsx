@@ -50,7 +50,7 @@ export default function NavMenu({name}: NavMenuProps) {
                         </Link>
 
                         <button
-                            className='block p-2 hover:text-purple-950'
+                            className='block p-2 text-red-500 hover:text-red-700 '
                             type='button'
                             onClick={logout}
                         >
