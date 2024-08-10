@@ -54,7 +54,7 @@ export default function ForgotPasswordView() {
                         placeholder="Email address"
                         className="w-full p-3  border-gray-300 border"
                         {...register("email", {
-                            required: "Email is required",
+                            required: "Please enter your email address to reset your password",
                             pattern: {
                                 value: /\S+@\S+\.\S+/,
                                 message: "E-mail not valid",

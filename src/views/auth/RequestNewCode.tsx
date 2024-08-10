@@ -52,7 +52,7 @@ export default function RegisterView() {
                         placeholder="Email address"
                         className="w-full p-3 rounded-lg border-gray-300 border"
                         {...register("email", {
-                            required: "Email is required",
+                            required: "Please enter your email to receive a new token",
                             pattern: {
                                 value: /\S+@\S+\.\S+/,
                                 message: "E-mail not valid",

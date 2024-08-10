@@ -57,7 +57,7 @@ export default function RegisterView() {
                         placeholder="Email address"
                         className="w-full p-3  border-gray-300 border"
                         {...register("email", {
-                            required: "Email is requires",
+                            required: "An email address is necessary to sign up",
                             pattern: {
                                 value: /\S+@\S+\.\S+/,
                                 message: "E-mail not valid",
@@ -103,7 +103,7 @@ export default function RegisterView() {
                         placeholder="Password"
                         className="w-full p-3  border-gray-300 border"
                         {...register("password", {
-                            required: "Password is required",
+                            required: "Please create a password.",
                             minLength: {
                                 value: 8,
                                 message: 'Enter a combination of at least 8 letters'

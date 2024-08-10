@@ -54,7 +54,7 @@ export default function LoginView() {
                         placeholder="Email address"
                         className="w-full p-3  border-gray-300 border"
                         {...register("email", {
-                            required: "Email is required",
+                            required: "Please enter your email address",
                             pattern: {
                                 value: /\S+@\S+\.\S+/,
                                 message: "E-mail not valid",
@@ -79,7 +79,7 @@ export default function LoginView() {
                         placeholder="Password"
                         className="w-full p-3  border-gray-300 border"
                         {...register("password", {
-                            required: "Password is required",
+                            required: "A password is needed to log in",
                         })}
                     />
 
