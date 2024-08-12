@@ -5,8 +5,11 @@ import { deleteProject, getProject } from "@/services/ProjectApi"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { Link } from "react-router-dom"
 import { toast } from 'react-toastify'
+import { useAuth } from '@/hooks/useAuth'
+import { isManager } from '@/utils/policies'
 
 const DashboardView = () => {
+    const { data: user, isLoading: authLoading } = useAuth()
     const { data, isLoading } = useQuery({
         queryKey: ['projects'],
         queryFn: getProject
@@ -14,20 +17,20 @@ const DashboardView = () => {
 
     const queryCLient = useQueryClient()
 
-    const {mutate} = useMutation({
+    const { mutate } = useMutation({
         mutationFn: deleteProject,
         onError: (error) => {
             toast.error(error.message)
         },
         onSuccess: (data) => {
             toast.success(data)
-            queryCLient.invalidateQueries({queryKey: ['projects']})
+            queryCLient.invalidateQueries({ queryKey: ['projects'] })
         }
     })
 
-    if (isLoading) return 'Loading...'
+    if (isLoading && authLoading) return 'Loading...'
 
-    if (data) return (
+    if (data && user) return (
         <>
             <h1 className="text-5xl font-black">My Projects</h1>
             <p className="text-2xl font-light text-gray-500 mt-5">Manage your Projects</p>
@@ -47,6 +50,16 @@ const DashboardView = () => {
                         <li key={project._id} className="flex justify-between gap-x-6 px-5 py-10">
                             <div className="flex min-w-0 gap-x-4">
                                 <div className="min-w-0 flex-auto space-y-2">
+
+                                    <div className='mb-2'>
+                                        {
+                                            isManager(project.manager, user._id) ? 
+                                            <p className='font-bold text-xs uppercase bg-blue-50 text-blue-500 border-2 border-blue-500 rounded-lg inline-block py-1 px-5'>Manager</p>
+                                            :
+                                            <p className='font-bold text-xs uppercase bg-orange-50 text-orange-500 border-2 border-orange-500 rounded-lg inline-block py-1 px-5'>Member</p>
+                                        }
+                                    </div>
+
                                     <Link
                                         to={`/projects/${project._id}`}
                                         className="text-gray-600 cursor-pointer hover:underline text-3xl font-bold"
@@ -89,22 +102,28 @@ const DashboardView = () => {
                                                 </Link>
                                             </MenuItem>
 
-                                            <MenuItem>
-                                                <Link to={`/projects/${project._id}/edit`}
-                                                    className='block px-3 py-1 text-sm leading-6 text-gray-900'>
-                                                    Edit Project
-                                                </Link>
-                                            </MenuItem>
+                                            {isManager(project.manager, user._id) && (
+                                                <>
+                                                    <MenuItem>
+                                                        <Link to={`/projects/${project._id}/edit`}
+                                                            className='block px-3 py-1 text-sm leading-6 text-gray-900'>
+                                                            Edit Project
+                                                        </Link>
+                                                    </MenuItem>
 
-                                            <MenuItem>
-                                                <button
-                                                    type='button'
-                                                    className='block px-3 py-1 text-sm leading-6 text-red-500'
-                                                    onClick={() => mutate(project._id)}
-                                                >
-                                                    Delete Project
-                                                </button>
-                                            </MenuItem>
+                                                    <MenuItem>
+                                                        <button
+                                                            type='button'
+                                                            className='block px-3 py-1 text-sm leading-6 text-red-500'
+                                                            onClick={() => mutate(project._id)}
+                                                        >
+                                                            Delete Project
+                                                        </button>
+                                                    </MenuItem>
+                                                </>
+                                            )}
+
+
                                         </MenuItems>
                                     </Transition>
                                 </Menu>

@@ -3,7 +3,8 @@ import TaskCard from "./TaskCard";
 import { StatusTranslations } from "@/locales/en";
 
 type TaskListProps = {
-    task: Task[];
+    task: Task[]
+    canEdit: boolean
 }
 
 type GroupedTasks = {
@@ -18,7 +19,7 @@ const initialStatusGroups: GroupedTasks = {
     completed: [],
 }
 
-const StatusStyle : {[key: string] : string} = {
+const StatusStyle: { [key: string]: string } = {
     pending: 'border-t-slate-500',
     onHold: 'border-t-cyan-500',
     inProgress: 'border-t-yellow-500',
@@ -26,7 +27,7 @@ const StatusStyle : {[key: string] : string} = {
     completed: 'border-t-emerald-500',
 }
 
-const TaskList = ({ task }: TaskListProps) => {
+const TaskList = ({ task, canEdit }: TaskListProps) => {
     const groupedTasks = task.reduce((acc, task) => {
         let currentGroup = acc[task.status] ? [...acc[task.status]] : []
         currentGroup = [...currentGroup, task]
@@ -46,7 +47,13 @@ const TaskList = ({ task }: TaskListProps) => {
                             {tasks.length === 0 ? (
                                 <li className="text-gray-500 text-center pt-3">No Tasks</li>
                             ) : (
-                                tasks.map(task => <TaskCard key={task._id} task={task} />)
+                                tasks.map(task =>
+                                    <TaskCard
+                                        key={task._id}
+                                        task={task}
+                                        canEdit={canEdit}
+                                    />
+                                )
                             )}
                         </ul>
                     </div>
