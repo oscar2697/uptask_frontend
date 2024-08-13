@@ -20,7 +20,7 @@ export default function TaskModalDetails() {
 
     const {data, isError, error} = useQuery({
         queryKey: ['task', taskId],
-        queryFn: async () => getTaskById({projectId, taskId}),
+        queryFn: () => getTaskById({projectId, taskId}),
         enabled: !!taskId,
         retry: false
     })
@@ -88,6 +88,18 @@ export default function TaskModalDetails() {
                                     </DialogTitle>
 
                                     <p className='text-lg text-slate-500 mb-2'>Description: {data.description} </p>
+
+                                    <p className='text-2xl text-slate-500 mb-2'>Update Log</p>
+
+                                    <ul className='list-decimal'>
+                                        {data.completedBy.map((activityLog) => (
+                                            <li key={activityLog._id}>
+                                                <span className='font-bold text-slate-600'>{StatusTranslations[activityLog.status]} </span>
+                                                {''}: {activityLog.user.name}
+                                            </li>
+                                        ))}
+                                    </ul>
+
 
                                     <div className='my-5 space-y-3'>
                                         <label className='font-bold'>Status:</label>
