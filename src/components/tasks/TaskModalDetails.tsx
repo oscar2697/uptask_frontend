@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import { formatDate } from '@/utils/utils';
 import { StatusTranslations } from '@/locales/en';
 import { TaskStatus } from '@/types/index';
+import NotesPanel from '../notes/NotesPanel';
 
 export default function TaskModalDetails() {
     const params = useParams()
@@ -18,42 +19,42 @@ export default function TaskModalDetails() {
 
     const show = taskId ? true : false
 
-    const {data, isError, error} = useQuery({
+    const { data, isError, error } = useQuery({
         queryKey: ['task', taskId],
-        queryFn: () => getTaskById({projectId, taskId}),
+        queryFn: () => getTaskById({ projectId, taskId }),
         enabled: !!taskId,
         retry: false
     })
 
     const query = useQueryClient()
 
-    const {mutate} = useMutation({
+    const { mutate } = useMutation({
         mutationFn: updateStatus,
         onError: (error) => {
             toast.error(error.message)
         },
         onSuccess: (data) => {
             toast.success(data)
-            query.invalidateQueries({queryKey: ['project', projectId]})
-            query.invalidateQueries({queryKey: ['task', taskId]})
-        } 
+            query.invalidateQueries({ queryKey: ['project', projectId] })
+            query.invalidateQueries({ queryKey: ['task', taskId] })
+        }
     })
 
     const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const status = e.target.value as TaskStatus
-        const data = {projectId, taskId, status}
+        const data = { projectId, taskId, status }
         mutate(data)
     }
 
-    if(isError) {
-        toast.error(error.message, {toastId: 'error'})
-        return <Navigate to={`/projects/${projectId}`}/>
+    if (isError) {
+        toast.error(error.message, { toastId: 'error' })
+        return <Navigate to={`/projects/${projectId}`} />
     }
 
-    if(data) return (
+    if (data) return (
         <>
             <Transition appear show={show} as={Fragment}>
-                <Dialog as="div" className="relative z-10" onClose={() => navigate(location.pathname, {replace: true})}>
+                <Dialog as="div" className="relative z-10" onClose={() => navigate(location.pathname, { replace: true })}>
                     <TransitionChild
                         as={Fragment}
                         enter="ease-out duration-300"
@@ -89,29 +90,37 @@ export default function TaskModalDetails() {
 
                                     <p className='text-lg text-slate-500 mb-2'>Description: {data.description} </p>
 
-                                    <p className='text-2xl text-slate-500 mb-2'>Update Log</p>
+                                    {data.completedBy.length ? (
+                                        <>
+                                            <p className='font-bold text-2xl text-slate-600 my-5'>Update Log</p>
 
-                                    <ul className='list-decimal'>
-                                        {data.completedBy.map((activityLog) => (
-                                            <li key={activityLog._id}>
-                                                <span className='font-bold text-slate-600'>{StatusTranslations[activityLog.status]} </span>
-                                                {''}: {activityLog.user.name}
-                                            </li>
-                                        ))}
-                                    </ul>
+                                            <ul className='list-decimal'>
+                                                {data.completedBy.map((activityLog) => (
+                                                    <li key={activityLog._id}>
+                                                        <span className='font-bold text-slate-600'>{StatusTranslations[activityLog.status]} </span>
+                                                        {''}: {activityLog.user.name}
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </>
+                                    ): null }
 
 
                                     <div className='my-5 space-y-3'>
                                         <label className='font-bold'>Status:</label>
 
-                                        <select 
-                                            className='w-full p-3 bg-white border border-gray-300' 
+                                        <select
+                                            className='w-full p-3 bg-white border border-gray-300'
                                             defaultValue={data.status}
                                             onChange={handleChange}
                                         >{Object.entries(StatusTranslations).map(([key, value]) => (
                                             <option key={key} value={key}>{value} </option>
                                         ))} </select>
                                     </div>
+
+                                    <NotesPanel
+                                        notes={data.notes}
+                                    />
                                 </DialogPanel>
                             </TransitionChild>
                         </div>
