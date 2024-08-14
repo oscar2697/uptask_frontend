@@ -12,6 +12,9 @@ import RequestNewCode from '@/views/auth/RequestNewCode'
 import ForgotPasswordView from './views/auth/ForgotPasswordView'
 import NewPasswordView from './views/auth/NewPasswordView'
 import ProjectTeamView from './views/projects/ProjectTeamView'
+import ProfileView from './views/profile/ProfileView'
+import ChangePasswordView from './views/profile/ChangePasswordView'
+import ProfileLayout from './layouts/ProfileLayout'
 
 
 const Router = () => {
@@ -24,6 +27,11 @@ const Router = () => {
                     <Route path='/projects/:projectId' element={<ProjectsDetails/>}/>
                     <Route path='/projects/:projectId/edit' element={<EditProjectView/>}/>
                     <Route path='/projects/:projectId/team' element={<ProjectTeamView/>}/>
+
+                    <Route element={<ProfileLayout/>}>
+                        <Route path='/profile' element={<ProfileView/>}/>
+                        <Route path='/profile/password-change' element={<ChangePasswordView/>}/>
+                    </Route>
                 </Route>
 
                 <Route element={<AuthLayout/>}>
