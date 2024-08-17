@@ -2,7 +2,7 @@ import AddTaskModal from '@/components/tasks/AddTaskModal'
 import EditTaskData from '@/components/tasks/EditTaskData'
 import TaskModalDetails from '@/components/tasks/TaskModalDetails'
 import TaskList from '@/components/tasks/TaskList'
-import { getProjectById } from '@/services/ProjectApi'
+import { getFullProject } from '@/services/ProjectApi'
 import { useQuery } from '@tanstack/react-query'
 import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from '@/hooks/useAuth'
@@ -17,7 +17,7 @@ const ProjectDetails = () => {
 
     const { data, isLoading, isError } = useQuery({
         queryKey: ['project', projectId],
-        queryFn: () => getProjectById(projectId),
+        queryFn: () => getFullProject(projectId),
         retry: false
     })
 
@@ -51,7 +51,7 @@ const ProjectDetails = () => {
             )}
 
             <TaskList
-                task={data.task}
+                tasks={data.task}
                 canEdit={canEdit}
             />
             <AddTaskModal/>
